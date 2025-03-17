@@ -44,19 +44,19 @@ function collectData() {
     console.log('難度:', difficulty);
 
     // 題型標籤 - 使用正確的選擇器
-    console.log('正在尋找題型標籤...');
+    console.log('正在尋找題型...');
     const topicElements = document.querySelectorAll('a[href^="/tag/"]');
-    console.log('找到的題型元素:', topicElements);
+    console.log('找到的題型:', topicElements);
 
     const topicTags = Array.from(topicElements)
         .map(tag => {
             const text = tag.textContent.trim();
-            console.log('題型標籤:', text);
+            console.log('題型:', text);
             return text;
         })
         .filter(tag => tag && tag.length > 0);
 
-    console.log('最終收集到的標籤:', [difficulty, ...topicTags]);
+    console.log('收集到的標籤:', [difficulty, ...topicTags]);
 
     return {
         problemName,
