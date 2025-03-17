@@ -1,0 +1,45 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Clone AI Review Tool
+        run: |
+          git clone https://github.com/chiangwill/ai-pr-reviewer
+          cd ai-pr-reviewer
+
+      - name: Install dependencies
+        run: |
+          cd ai-pr-reviewer
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install
+          npm install -g repomix
+
+      - name: Run AI Code Review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+        run: |
+          cd ai-pr-reviewer
+          pipenv run python -m src.main --repo ${{ github.repository }} --pr ${{ github.event.pull_request.number }}
