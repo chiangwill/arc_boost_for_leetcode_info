@@ -81,7 +81,7 @@ function collectAndSendData() {
         .then(response => response.text())
         .then(result => {
             console.log('Sync success:', result);
-            showNotification('成功同步到 Notion!');
+            showNotification('成功同步到 Notion !');
         })
         .catch(error => {
             console.error('Request failed:', error);
